@@ -3,7 +3,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "open": "^10.1.0",
     "pg": "^8.13.1",
+    "puppeteer": "^24.2.0",
+    "puppeteer-core": "^24.2.0",
     "tiktok-live-connector": "^1.2.3"
   }
 }
