@@ -10,6 +10,7 @@ app.use(express.json(), cors());
 const { WebcastPushConnection } = require('tiktok-live-connector');
 
 let tiktokUsername = "nino8291";
+let gifterNames = [];
 
 // Create a new wrapper object and pass the username
 let tiktokLiveConnection = new WebcastPushConnection(tiktokUsername, {
@@ -48,6 +49,7 @@ tiktokLiveConnection.on('gift', data => {
     } else {
         // Streak ended or non-streakable gift => process the gift with final repeat_count
         console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`);
+        gifterNames.push(data.uniqueId)
     }
     
 })
@@ -55,13 +57,21 @@ tiktokLiveConnection.on('gift', data => {
 // Define the events that you want to handle
 // In this case we listen to chat messages (comments)
 tiktokLiveConnection.on('chat', data => {
-    console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`);
+    for(let i = 0; i< gifterNames.length; i++){
+        if(data.uniqueId === gifterNames[i]){
+            console.log(data.uniqueId + ': ' + data.comment)
+            gifterNames.splice(i,1);
+        }
+    }
+    // console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`);
 })
 
 // And here we receive gifts sent to the streamer
-tiktokLiveConnection.on('gift', data => {
-    console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`);
-})
+// tiktokLiveConnection.on('gift', data => {
+//     // console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`);
+//     gifterNames.push(data.uniqueId)
+//     console.log(giterNames)
+// })
 
 
 /*
